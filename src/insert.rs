@@ -1,7 +1,7 @@
 
 use crate::schema::users;
 use crate::models::{NewUser};
-use crate::repository::establish_connection;
+use crate::db_provider::establish_connection;
 use diesel::RunQueryDsl;
 
 pub fn run() {

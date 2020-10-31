@@ -5,7 +5,7 @@ extern crate diesel;
 mod query;
 pub mod models;
 pub mod schema;
-pub mod repository;
+pub mod db_provider;
 
 fn main() {
     query::run();

@@ -5,6 +5,6 @@ authors = ["Manel Naspreda <manel.naspreda@Manels-MacBook-Pro.local>"]
 edition = "2018"
 
 [dependencies]
-diesel = { version = "1.4.4", features = ["mysql", "chrono"] }
+diesel = { version = "1.4.4", features = ["mysql", "r2d2", "chrono"] }
 dotenv = "0.15.0"
 chrono = "0.4"
