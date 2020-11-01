@@ -3,6 +3,7 @@ use diesel::mysql::MysqlConnection;
 use dotenv::dotenv;
 use std::env;
 use std::result::Result;
+use diesel::r2d2::{ConnectionManager, Pool, PoolError, PooledConnection};
 
 pub fn establish_connection() -> MysqlConnection {
     dotenv().ok();
@@ -12,8 +13,6 @@ pub fn establish_connection() -> MysqlConnection {
     MysqlConnection::establish(&database_url)
         .expect(&format!("Error connecting to {}", database_url))
 }
-
-use diesel::r2d2::{ConnectionManager, Pool, PoolError, PooledConnection};
 
 pub type MysqlPool = Pool<ConnectionManager<MysqlConnection>>;
 pub type MySqlPooledConnection = PooledConnection<ConnectionManager<MysqlConnection>>;

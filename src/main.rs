@@ -1,12 +1,11 @@
 #[macro_use]
 extern crate diesel;
 
-// mod insert;
-mod query;
-pub mod models;
-pub mod schema;
-pub mod db_provider;
+mod infrastructure;
+
+use infrastructure::repository;
 
 fn main() {
-    query::run();
+    let user = repository::create_user();
+    println!("{:?}", user);
 }

@@ -1,4 +1,3 @@
-
 use crate::models::User;
 use crate::db_provider::connect;
 use crate::schema::users::dsl::*;

@@ -1,4 +1,4 @@
-use crate::schema::users;
+use crate::infrastructure::schema::users;
 
 #[derive(Debug, Queryable)]
 pub struct User {
@@ -13,6 +13,14 @@ pub struct User {
 #[table_name="users"]
 pub struct NewUser<'a> {
     pub id: &'a i32,
+    pub first_name: &'a str,
+    pub last_name: &'a str,
+    pub phone: &'a str,
+    pub active: &'a bool,
+}
+
+
+pub struct NewUser1<'a> {
     pub first_name: &'a str,
     pub last_name: &'a str,
     pub phone: &'a str,
