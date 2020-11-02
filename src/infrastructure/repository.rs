@@ -1,4 +1,4 @@
-use crate::infrastructure::db_provider::{ connect, stablish_connection };
+use crate::infrastructure::db_provider::stablish_connection;
 use crate::infrastructure::schema::users::dsl::*;
 use crate::infrastructure::schema::users;
 use crate::infrastructure::models::{NewUserData, NewUser1, UserData};
