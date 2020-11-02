@@ -40,7 +40,6 @@ pub fn create_user() -> UserData {
 
 pub fn find_user_by_id(user_id: i32) -> Option<UserData> {
     let conn = stablish_connection();
-
     let user_found_result = users
         .filter(id.eq(user_id))
         .first::<UserData>(&conn);

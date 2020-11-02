@@ -1,7 +1,7 @@
 use crate::infrastructure::schema::users;
 
 #[derive(Debug, Queryable)]
-pub struct User {
+pub struct UserData {
     pub id: i32,
     pub first_name: String,
     pub last_name: String,
@@ -11,7 +11,7 @@ pub struct User {
 
 #[derive(Insertable)]
 #[table_name="users"]
-pub struct NewUser<'a> {
+pub struct NewUserData<'a> {
     pub id: &'a i32,
     pub first_name: &'a str,
     pub last_name: &'a str,
