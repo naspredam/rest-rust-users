@@ -18,11 +18,3 @@ pub struct NewUserData<'a> {
     pub phone: &'a str,
     pub active: &'a bool,
 }
-
-
-pub struct NewUser1<'a> {
-    pub first_name: &'a str,
-    pub last_name: &'a str,
-    pub phone: &'a str,
-    pub active: &'a bool,
-}

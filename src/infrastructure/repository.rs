@@ -1,31 +1,25 @@
+use crate::domain::models::User;
 use crate::infrastructure::db_provider::stablish_connection;
+use crate::infrastructure::mapper;
 use crate::infrastructure::schema::users::dsl::*;
 use crate::infrastructure::schema::users;
-use crate::infrastructure::models::{NewUserData, NewUser1, UserData};
+use crate::infrastructure::models::{NewUserData, UserData};
+
 use diesel::prelude::*;
 use diesel::RunQueryDsl;
 use diesel::result::Error;
+
 use std::option::Option;
 
-pub fn create_user() -> UserData {
-    let new_user = NewUser1 {
-        first_name: "Manel",
-        last_name: "Naspreda",
-        phone: "+34...",
-        active: &true,
-    };
-
+pub fn create_user(user: User) -> User {
     let conn = stablish_connection();
-    let num_users: i64 = users.count()
-        .get_result(&conn)
-        .expect("Count of users persisted.");
-    let next_user_id: i32 = num_users as i32 + 1;
+    let num_users: i64 = users.count().get_result(&conn).expect("Count of users persisted.");
     let user_to_persist = NewUserData {
-        id: &next_user_id,
-        first_name: new_user.first_name,
-        last_name: new_user.last_name,
-        phone: new_user.phone,
-        active: new_user.active,
+        id: &(num_users as i32 + 1),
+        first_name: &user.first_name,
+        last_name: &user.last_name,
+        phone: &user.phone,
+        active: &user.active,
     };
 
     conn.transaction::<_, Error, _>(|| {
@@ -34,15 +28,18 @@ pub fn create_user() -> UserData {
             .execute(&conn)
             .unwrap();
 
-        users.order(id.desc()).first::<UserData>(&conn)
+        users.order(id.desc())
+            .first::<UserData>(&conn)
+            .map(mapper::map_to_domain)
     }).expect("User saved not able to retrieve data...")
 }
 
-pub fn find_user_by_id(user_id: i32) -> Option<UserData> {
+pub fn find_user_by_id(user_id: i32) -> Option<User> {
     let conn = stablish_connection();
     let user_found_result = users
         .filter(id.eq(user_id))
-        .first::<UserData>(&conn);
+        .first::<UserData>(&conn)
+        .map(mapper::map_to_domain);
 
     match user_found_result {
         Ok(user_found) => Some(user_found),
@@ -50,12 +47,14 @@ pub fn find_user_by_id(user_id: i32) -> Option<UserData> {
     }
 }
 
-pub fn find_all_users() -> Vec<UserData> {
+pub fn find_all_users() -> Vec<User> {
     let conn = stablish_connection();
     users
         .load::<UserData>(&conn)
         .expect("User saved not able to retrieve data...")
-
+        .into_iter()
+        .map(mapper::map_to_domain)
+        .rev().collect()
 }
 
 // pub fn deleteUserById() {

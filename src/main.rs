@@ -2,6 +2,7 @@
 extern crate diesel;
 
 mod infrastructure;
+mod domain;
 mod starters;
 
 use infrastructure::repository;
