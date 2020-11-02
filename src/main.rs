@@ -2,10 +2,12 @@
 extern crate diesel;
 
 mod infrastructure;
+mod starters;
 
 use infrastructure::repository;
 
 fn main() {
-    let user = repository::create_user();
+    starters::start();
+    let user = repository::find_all_users();
     println!("{:?}", user);
 }

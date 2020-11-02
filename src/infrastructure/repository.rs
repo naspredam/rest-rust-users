@@ -1,12 +1,13 @@
-use crate::infrastructure::db_provider::connect;
+use crate::infrastructure::db_provider::{ connect, stablish_connection };
 use crate::infrastructure::schema::users::dsl::*;
 use crate::infrastructure::schema::users;
-use crate::infrastructure::models::{NewUser, NewUser1, User};
+use crate::infrastructure::models::{NewUserData, NewUser1, UserData};
 use diesel::prelude::*;
 use diesel::RunQueryDsl;
 use diesel::result::Error;
+use std::option::Option;
 
-pub fn create_user() -> User {
+pub fn create_user() -> UserData {
     let new_user = NewUser1 {
         first_name: "Manel",
         last_name: "Naspreda",
@@ -14,12 +15,12 @@ pub fn create_user() -> User {
         active: &true,
     };
 
-    let conn = connect().get()
-        .map_err(|err| { println!( "get connection from pool error in line:{} ! error: {:?}", line!(), err) })
-        .expect("Retrieve the connection...");
-    let num_users: i64 = users.count().get_result(&conn).expect("");
+    let conn = stablish_connection();
+    let num_users: i64 = users.count()
+        .get_result(&conn)
+        .expect("Count of users persisted.");
     let next_user_id: i32 = num_users as i32 + 1;
-    let user_to_persist = NewUser {
+    let user_to_persist = NewUserData {
         id: &next_user_id,
         first_name: new_user.first_name,
         last_name: new_user.last_name,
@@ -28,22 +29,35 @@ pub fn create_user() -> User {
     };
 
     conn.transaction::<_, Error, _>(|| {
-            diesel::insert_into(users::table)
-                .values(&user_to_persist)
-                .execute(&conn)
-                .unwrap();
+        diesel::insert_into(users::table)
+            .values(&user_to_persist)
+            .execute(&conn)
+            .unwrap();
 
-            users.order(id.desc()).first::<User>(&conn)
-        }).expect("User saved not able to retrieve data...")
+        users.order(id.desc()).first::<UserData>(&conn)
+    }).expect("User saved not able to retrieve data...")
 }
 
-// pub fn findUserById() -> Optional<User> {
-    
-// }
+pub fn find_user_by_id(user_id: i32) -> Option<UserData> {
+    let conn = stablish_connection();
 
-// pub fn findAllUsers() -> Vec<User> {
-    
-// }
+    let user_found_result = users
+        .filter(id.eq(user_id))
+        .first::<UserData>(&conn);
+
+    match user_found_result {
+        Ok(user_found) => Some(user_found),
+        Err(..) => None
+    }
+}
+
+pub fn find_all_users() -> Vec<UserData> {
+    let conn = stablish_connection();
+    users
+        .load::<UserData>(&conn)
+        .expect("User saved not able to retrieve data...")
+
+}
 
 // pub fn deleteUserById() {
     
