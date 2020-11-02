@@ -13,7 +13,7 @@ use std::option::Option;
 
 pub fn create_user(user: User) -> User {
     let conn = stablish_connection();
-    let num_users: i64 = users.count().get_result(&conn).expect("Count of users persisted.");
+    let num_users: i64 = users.count().get_result(&conn).unwrap();
     let user_to_persist = NewUserData {
         id: &(num_users as i32 + 1),
         first_name: &user.first_name,
@@ -31,7 +31,7 @@ pub fn create_user(user: User) -> User {
         users.order(id.desc())
             .first::<UserData>(&conn)
             .map(mapper::map_to_domain)
-    }).expect("User saved not able to retrieve data...")
+    }).unwrap()
 }
 
 pub fn find_user_by_id(user_id: i32) -> Option<User> {
@@ -51,12 +51,17 @@ pub fn find_all_users() -> Vec<User> {
     let conn = stablish_connection();
     users
         .load::<UserData>(&conn)
-        .expect("User saved not able to retrieve data...")
+        .unwrap()
         .into_iter()
         .map(mapper::map_to_domain)
-        .rev().collect()
+        .rev()
+        .collect()
 }
 
-// pub fn deleteUserById() {
-    
-// }
+pub fn deleteUserById(user_id: i32) {
+    let conn = stablish_connection();
+    diesel::delete(users.filter(id.eq(user_id)))
+        .execute(&conn)
+        .unwrap();
+
+}
