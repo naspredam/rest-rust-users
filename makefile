@@ -1,6 +1,10 @@
 start-db:
 	docker-compose up -d db
 
+clean:
+	docker image prune -f
+	docker container prune -f
+
 local-run:
 	cargo run
 
@@ -11,8 +15,7 @@ start:
 stop:
 	docker-compose down
 
-restart:
-	make stop && make start
-
 logs:
 	docker-compose logs -f
+
+restart: clean stop start

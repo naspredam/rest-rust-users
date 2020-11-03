@@ -4,12 +4,21 @@ services:
 
   db:
     image: mysql:8.0.22
+    command: --default-authentication-plugin=mysql_native_password
     ports:
       - 3307:3306
-    volumes:
-      - ./init-db/:/docker-entrypoint-initdb.d/:rw
     environment:
       MYSQL_ROOT_PASSWORD: rootpasswd
       MYSQL_DATABASE: app
     healthcheck:
-      test: "/usr/bin/mysql --user=root --password=rootpasswd --execute \"USE app; SHOW TABLES LIKE 'users';\""
+      test: "/usr/bin/mysql --user=root --password=rootpasswd --execute \"USE app;\""
+
+  app:
+    image: rest-rust-users
+    ports:
+      - 8000:8000
+    environment:
+      DATABASE_URL: mysql://root:rootpasswd@db:3306/app
+    depends_on:
+      db:
+        condition: service_healthy
