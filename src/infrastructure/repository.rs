@@ -58,7 +58,7 @@ pub fn find_all_users() -> Vec<User> {
         .collect()
 }
 
-pub fn deleteUserById(user_id: i32) {
+pub fn delete_user_by_id(user_id: i32) {
     let conn = stablish_connection();
     diesel::delete(users.filter(id.eq(user_id)))
         .execute(&conn)
