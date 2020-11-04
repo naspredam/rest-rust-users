@@ -9,6 +9,12 @@ pub fn create_new_user(user_change_body_dto: UserChangeBodyDto) -> UserDto {
     mapper::map_to_dto(saved_user)
 }
 
+pub fn update_user(user_id: i32, user_change_body_dto: UserChangeBodyDto) -> UserDto {
+    let user: User = mapper::map_to_domain_with_id(user_id, user_change_body_dto);
+    let saved_user: User = persist_user_use_case::update_user(user);
+    mapper::map_to_dto(saved_user)
+}
+
 pub fn delete_user(user_id: i32) {
     persist_user_use_case::delete_existing_user(user_id);
 }

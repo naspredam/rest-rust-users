@@ -30,6 +30,20 @@ pub fn create_user(user: User) -> User {
     }).unwrap()
 }
 
+pub fn update_user(user: User) -> User {
+    let user_id = user.id.unwrap();
+    let conn = stablish_connection();
+    diesel::update(users.filter(id.eq(user_id)))
+        .set((first_name.eq(user.first_name), last_name.eq(user.last_name), phone.eq(user.phone)))
+        .execute(&conn)
+        .unwrap();
+
+    users.filter(id.eq(user_id))
+        .first::<UserData>(&conn)
+        .map(mapper::map_to_domain)
+        .unwrap()
+}
+
 pub fn delete_user_by_id(user_id: i32) {
     let conn = stablish_connection();
     diesel::delete(users.filter(id.eq(user_id)))
