@@ -7,6 +7,5 @@ pub fn map_to_domain(user_data: UserData) -> User {
         first_name: user_data.first_name,
         last_name: user_data.last_name,
         phone: user_data.phone,
-        active: user_data.active,
     }
 }

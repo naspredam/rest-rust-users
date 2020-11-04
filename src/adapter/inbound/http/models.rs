@@ -6,7 +6,6 @@ pub struct UserDto {
     pub first_name: String,
     pub last_name: String,
     pub phone: String,
-    pub active: bool,
 }
 
 #[derive(Deserialize)] 
@@ -14,5 +13,4 @@ pub struct UserChangeBodyDto {
     pub first_name: String,
     pub last_name: String,
     pub phone: String,
-    pub active: bool,
 }

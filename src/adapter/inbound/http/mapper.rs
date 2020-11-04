@@ -7,7 +7,6 @@ pub fn map_to_dto(user: User) -> UserDto {
         first_name: user.first_name,
         last_name: user.last_name,
         phone: user.phone,
-        active: user.active,
     }
 }
 
@@ -17,6 +16,5 @@ pub fn map_to_domain(user_change_body_dto: UserChangeBodyDto) -> User {
         first_name: user_change_body_dto.first_name,
         last_name: user_change_body_dto.last_name,
         phone: user_change_body_dto.phone,
-        active: user_change_body_dto.active,
     }
 }

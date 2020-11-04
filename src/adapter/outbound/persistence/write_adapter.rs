@@ -16,7 +16,6 @@ pub fn create_user(user: User) -> User {
         first_name: &user.first_name,
         last_name: &user.last_name,
         phone: &user.phone,
-        active: &user.active,
     };
 
     conn.transaction::<_, Error, _>(|| {

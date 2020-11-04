@@ -6,7 +6,6 @@ pub struct UserData {
     pub first_name: String,
     pub last_name: String,
     pub phone: String,
-    pub active: bool,
 }
 
 #[derive(Insertable)]
@@ -16,5 +15,4 @@ pub struct NewUserData<'a> {
     pub first_name: &'a str,
     pub last_name: &'a str,
     pub phone: &'a str,
-    pub active: &'a bool,
 }
