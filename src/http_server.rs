@@ -1,5 +1,5 @@
-use crate::adapter::inbound::http::{read_http_adapter, write_http_adapter};
-use crate::adapter::inbound::http::models::UserChangeBodyDto;
+use crate::repository;
+use crate::models::UserChangeBodyDto;
 
 use rocket::{delete, get, post, catch, Request};
 use rocket_contrib::json;
@@ -20,25 +20,25 @@ fn not_found(req: &Request) -> json::Json<json::JsonValue> {
 
 #[get("/", format = "application/json")]
 fn get_all() -> json::Json<json::JsonValue> {
-    let users = read_http_adapter::fetch_all_users();
+    let users = repository::find_all_users();
     json::Json(json!(users))
 }
 
 #[get("/<user_id>", format = "application/json")]
 fn find_user(user_id: i32) -> Option<json::Json<json::JsonValue>> {
-    read_http_adapter::fetch_user_by_id(user_id)
+    repository::find_user_by_id(user_id)
         .map(|user_dto| json::Json(json!(user_dto)))
 }
 
 #[post("/", format = "application/json", data = "<new_user>")]
 fn create_new_user(new_user: json::Json<UserChangeBodyDto>) -> json::Json<json::JsonValue> {
-    let saved_user = write_http_adapter::create_new_user(new_user.into_inner());
+    let saved_user = repository::create_user(new_user.into_inner());
     json::Json(json!(saved_user))
 }
 
 #[delete("/<user_id>", format = "application/json")]
 fn delete_user_by_id(user_id: i32) {
-    write_http_adapter::delete_user(user_id);
+    repository::delete_user_by_id(user_id);
 }
 
 pub fn launch() {
