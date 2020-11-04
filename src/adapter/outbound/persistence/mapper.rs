@@ -1,5 +1,5 @@
 use crate::domain::models::User;
-use crate::infrastructure::models::{UserData};
+use crate::adapter::outbound::persistence::models::UserData;
 
 pub fn map_to_domain(user_data: UserData) -> User {
     User {

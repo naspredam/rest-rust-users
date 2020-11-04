@@ -1,4 +1,4 @@
-use crate::infrastructure::schema::users;
+use crate::adapter::outbound::persistence::schema::users;
 
 #[derive(Debug, Queryable)]
 pub struct UserData {

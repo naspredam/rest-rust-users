@@ -4,21 +4,14 @@
 extern crate diesel;
 extern crate rocket;
 
+mod adapter;
 mod application;
 mod domain;
-mod infrastructure;
 
-use application as app;
-use infrastructure::starters;
+use adapter::inbound::http::http_server;
+use adapter::outbound::persistence::db_provider;
 
 fn main() {
-    starters::start();
-    let user_routes = rocket::routes![
-        app::routes::get_all, app::routes::find_user,
-        app::routes::delete_user_by_id, app::routes::create_new_user];
-    let catchers = rocket::catchers![app::catchers::internal_error, app::catchers::not_found];
-    rocket::ignite()
-        .mount("/users", user_routes)
-        .register(catchers)
-        .launch();
+    db_provider::start_connection_pool();
+    http_server::launch();
 }

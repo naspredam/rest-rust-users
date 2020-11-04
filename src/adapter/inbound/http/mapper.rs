@@ -1,5 +1,5 @@
 use crate::domain::models::User;
-use crate::application::models::{UserDto, UserChangeBodyDto};
+use crate::adapter::inbound::http::models::{UserDto, UserChangeBodyDto};
 
 pub fn map_to_dto(user: User) -> UserDto {
     UserDto {
