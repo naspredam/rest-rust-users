@@ -1,7 +1,6 @@
-use crate::schema::users;
-use serde::{Serialize, Deserialize};
+use crate::adapter::outbound::persistence::schema::users;
 
-#[derive(Debug, Queryable, Serialize)]
+#[derive(Debug, Queryable)]
 pub struct UserData {
     pub id: i32,
     pub first_name: String,
@@ -16,11 +15,4 @@ pub struct NewUserData<'a> {
     pub first_name: &'a str,
     pub last_name: &'a str,
     pub phone: &'a str,
-}
-
-#[derive(Deserialize)] 
-pub struct UserChangeBodyDto {
-    pub first_name: String,
-    pub last_name: String,
-    pub phone: String,
 }

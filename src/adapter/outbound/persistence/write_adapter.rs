@@ -1,13 +1,15 @@
-use crate::schema::users;
-use crate::schema::users::dsl::*;
-use crate::models::{UserData, NewUserData, UserChangeBodyDto};
-use crate::db_provider::stablish_connection;
+use crate::domain::models::User;
+use crate::adapter::outbound::persistence::db_provider::stablish_connection;
+use crate::adapter::outbound::persistence::mapper;
+use crate::adapter::outbound::persistence::schema::users::dsl::*;
+use crate::adapter::outbound::persistence::schema::users;
+use crate::adapter::outbound::persistence::models::{NewUserData, UserData};
 
 use diesel::prelude::*;
 use diesel::RunQueryDsl;
 use diesel::result::Error;
 
-pub fn create_user(user: UserChangeBodyDto) -> UserData {
+pub fn create_user(user: User) -> User {
     let conn = stablish_connection();
     let user_to_persist = NewUserData {
         id: &0,
@@ -24,6 +26,7 @@ pub fn create_user(user: UserChangeBodyDto) -> UserData {
 
         users.order(id.desc())
             .first::<UserData>(&conn)
+            .map(mapper::map_to_domain)
     }).unwrap()
 }
 
@@ -33,23 +36,4 @@ pub fn delete_user_by_id(user_id: i32) {
         .execute(&conn)
         .unwrap();
 
-}
-
-pub fn find_all_users() -> Vec<UserData> {
-    let conn = stablish_connection();
-    users
-        .load::<UserData>(&conn)
-        .unwrap()
-}
-
-pub fn find_user_by_id(user_id: i32) -> Option<UserData> {
-    let conn = stablish_connection();
-    let user_found_result = users
-        .filter(id.eq(user_id))
-        .first::<UserData>(&conn);
-
-    match user_found_result {
-        Ok(user_found) => Some(user_found),
-        Err(..) => None
-    }
 }

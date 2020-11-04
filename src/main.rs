@@ -4,11 +4,12 @@
 extern crate diesel;
 extern crate rocket;
 
-mod db_provider;
-mod http_server;
-mod models;
-mod schema;
-mod repository;
+mod adapter;
+mod application;
+mod domain;
+
+use adapter::inbound::http::http_server;
+use adapter::outbound::persistence::db_provider;
 
 fn main() {
     db_provider::start_connection_pool();
