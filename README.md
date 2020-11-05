@@ -9,11 +9,11 @@ This project has as objective to have a rest api build on:
 
 Using standard rest/web strategy, non-reactive.
 
-## What the rest api stands for?
+## What the rest api stands for
 
 The rest will have the resource:
 
-```
+```vim
 /users
 ```
 
