@@ -1,5 +1,5 @@
 use crate::domain::models::User;
-use crate::adapter::outbound::persistence::db_provider::stablish_connection;
+use crate::infrastructure::db_provider::stablish_connection;
 use crate::adapter::outbound::persistence::mapper;
 use crate::adapter::outbound::persistence::schema::users::dsl::*;
 use crate::adapter::outbound::persistence::models::UserData;

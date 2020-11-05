@@ -9,11 +9,9 @@ extern crate diesel_migrations;
 mod adapter;
 mod application;
 mod domain;
-
-use adapter::inbound::http::http_server;
-use adapter::outbound::persistence::db_provider;
+mod infrastructure;
 
 fn main() {
-    db_provider::connect_to_datbase();
-    http_server::launch();
+    infrastructure::db_provider::connect_to_datbase();
+    infrastructure::http_server::launch();
 }
