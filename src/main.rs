@@ -2,7 +2,9 @@
 
 #[macro_use]
 extern crate diesel;
-extern crate rocket;
+
+#[macro_use]
+extern crate diesel_migrations;
 
 mod adapter;
 mod application;
@@ -12,6 +14,6 @@ use adapter::inbound::http::http_server;
 use adapter::outbound::persistence::db_provider;
 
 fn main() {
-    db_provider::start_connection_pool();
+    db_provider::connect_to_datbase();
     http_server::launch();
 }

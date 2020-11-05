@@ -24,10 +24,9 @@ COPY --chown=app-user ./migrations/ /home/app-user/migrations
 COPY --chown=app-user ./scripts/ /home/app-user
 
 RUN chmod +x /home/app-user/*.sh
-RUN cargo install diesel_cli --no-default-features --features mysql
 
 EXPOSE 8000
 USER app-user
 WORKDIR /home/app-user
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["./release/rest-rust-users"]
